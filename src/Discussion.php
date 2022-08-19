@@ -11,7 +11,8 @@ use Illuminate\Validation\Concerns\ValidatesAttributes;
 
 class Discussion implements ExtenderInterface
 {
-    use Concerns\Users,
+    use Concerns\Content,
+        Concerns\Users,
         Concerns\SpamBlock,
         ValidatesAttributes;
 
@@ -21,9 +22,14 @@ class Discussion implements ExtenderInterface
         $events = $container->make(Dispatcher::class);
 
         $events->listen(Saving::class, function (Saving $event) {
-            // We do not allow useless discussions that have a URL.
-            if ($this->validateUrl('url', $event->discussion->title)
+            // Disallow any blocked content and any urls in subject.
+            $badContent = $this->containsProblematicContent($event->discussion->title)
+                || $this->validateUrl('url', $event->discussion->title);
+
+            if ($badContent
+                // Ignore discussions that are soft deleted (already).
                 && $event->discussion->hidden_at === null
+                // Only enact spam prevent on fresh users.
                 && $this->isFreshUser($event->discussion->user)) {
 
                 $event->discussion->afterSave(function (\Flarum\Discussion\Discussion $discussion) {
