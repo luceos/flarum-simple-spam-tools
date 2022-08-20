@@ -2,6 +2,7 @@
 
 namespace Luceos\Spam\Concerns;
 
+use Flarum\Api\Client;
 use Flarum\Extension\ExtensionManager;
 use Flarum\User\User;
 use FoF\Spamblock\Controllers\MarkAsSpammerController;
@@ -16,7 +17,10 @@ trait SpamBlock
         $extensions = resolve(ExtensionManager::class);
 
         if ($extensions->isEnabled('fof-spamblock')) {
-            $this->api()->send(
+            /** @var Client $api */
+            $api = resolve(Client::class);
+
+            $api->send(
                 MarkAsSpammerController::class,
                 $this->getModerator(),
                 ['id' => $user->id]
