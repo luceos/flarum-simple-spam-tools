@@ -20,11 +20,12 @@ trait SpamBlock
             /** @var Client $api */
             $api = resolve(Client::class);
 
-            $api->send(
-                MarkAsSpammerController::class,
-                $this->getModerator(),
-                ['id' => $user->id]
-            );
+            $api
+                ->withActor($this->getModerator())
+                ->send(
+                    'post',
+                    "/users/$user->id/spamblock"
+                );
         }
     }
 }
