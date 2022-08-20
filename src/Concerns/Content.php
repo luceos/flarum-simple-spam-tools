@@ -18,7 +18,7 @@ trait Content
 
         return
             // phone
-            preg_match('~(\+|00)[0-9 ]{10,}~', $content) ||
+            preg_match('~(\+|00)[0-9 ]{9,}~', $content) ||
             // email
             preg_match('~[\S]+@[\S]+\.[\S]+~', $content) ||
             // links
