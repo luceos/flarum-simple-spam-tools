@@ -23,7 +23,7 @@ class Discussion implements ExtenderInterface
         $events = $container->make(Dispatcher::class);
 
         $events->listen(Saving::class, function (Saving $event) {
-            if ($event->post->number !== 1) return;
+            if ($event->post->number !== null || $event->post->number !== 1) return;
 
             $discussion = $event->post->discussion;
             $firstPost = $event->post;
