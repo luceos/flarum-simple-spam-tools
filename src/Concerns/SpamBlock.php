@@ -20,12 +20,16 @@ trait SpamBlock
             /** @var Client $api */
             $api = resolve(Client::class);
 
-            $api
+            $response = $api
                 ->withActor($this->getModerator())
                 ->send(
                     'post',
                     "/users/$user->id/spamblock"
                 );
+
+            return $response->getStatusCode() === 204;
         }
+
+        return false;
     }
 }

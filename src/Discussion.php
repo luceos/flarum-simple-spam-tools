@@ -11,7 +11,8 @@ use Illuminate\Validation\Concerns\ValidatesAttributes;
 
 class Discussion implements ExtenderInterface
 {
-    use Concerns\Content,
+    use Concerns\Approval,
+        Concerns\Content,
         Concerns\Users,
         Concerns\SpamBlock,
         ValidatesAttributes;
@@ -33,7 +34,10 @@ class Discussion implements ExtenderInterface
                 && $this->isFreshUser($event->discussion->user)) {
 
                 $event->discussion->afterSave(function (\Flarum\Discussion\Discussion $discussion) {
-                    $this->markAsSpammer($discussion->user);
+                    // Try to mark as spammer
+                    $this->markAsSpammer($discussion->user)
+                        // otherwise mark for approval
+                        || $this->unapproveAndFlag($discussion->firstPost, 'Discussion subject contains bad content.');
                 });
             }
         });
