@@ -16,7 +16,7 @@ class Filter implements ExtenderInterface
 
     public function allowLinksFromDomain(string $domain)
     {
-        static::$acceptableDomains[] = parse_url($domain, PHP_URL_HOST);
+        static::$acceptableDomains[] = parse_url($domain, PHP_URL_HOST) ?? $domain;
 
         return $this;
     }

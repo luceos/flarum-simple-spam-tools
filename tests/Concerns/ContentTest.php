@@ -119,7 +119,11 @@ EOM
         );
     }
 
-    function fails_on_example_1()
+    /**
+     * @covers \Luceos\Spam\Concerns\Content
+     * @test
+     */
+    function fails_on_example_from_discuss_2022_08_26()
     {
         (new Filter)
             ->allowLinksFromDomain('flarum.org')
