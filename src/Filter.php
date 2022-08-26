@@ -4,6 +4,7 @@ namespace Luceos\Spam;
 
 use Flarum\Extend\ExtenderInterface;
 use Flarum\Extension\Extension;
+use Flarum\Foundation\Config;
 use Illuminate\Contracts\Container\Container;
 
 class Filter implements ExtenderInterface
@@ -44,5 +45,13 @@ class Filter implements ExtenderInterface
     public function extend(Container $container, Extension $extension = null)
     {
 
+    }
+
+    public static function getAcceptableDomains(): array
+    {
+        /** @var Config $config */
+        $config = resolve(Config::class);
+
+        return static::$acceptableDomains + [$config->url()];
     }
 }

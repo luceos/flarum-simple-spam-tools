@@ -2,17 +2,13 @@
 
 namespace Luceos\Spam\Concerns;
 
-use Flarum\Foundation\Config;
 use Luceos\Spam\Filter;
 
 trait Content
 {
     public function containsProblematicContent(string $content): bool
     {
-        /** @var Config $config */
-        $config = resolve(Config::class);
-
-        $domains = Filter::$acceptableDomains + [$config->url()->getHost()];
+        $domains = Filter::getAcceptableDomains();
         $domains = join('|', $domains);
         $domains = str_replace('.', '\.', $domains);
 
