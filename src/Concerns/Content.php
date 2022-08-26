@@ -9,7 +9,7 @@ trait Content
     public function containsProblematicContent(string $content): bool
     {
         $domains = Filter::getAcceptableDomains();
-        
+
         $domains = join('|', $domains);
         $domains = str_replace('.', '\.', $domains);
         return

@@ -6,6 +6,7 @@ use Flarum\Extend\ExtenderInterface;
 use Flarum\Extension\Extension;
 use Flarum\Foundation\Config;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Support\Str;
 
 class Filter implements ExtenderInterface
 {
@@ -16,7 +17,13 @@ class Filter implements ExtenderInterface
 
     public function allowLinksFromDomain(string $domain)
     {
-        static::$acceptableDomains[] = parse_url($domain, PHP_URL_HOST) ?? $domain;
+        $scheme = parse_url($domain, PHP_URL_SCHEME) ?? 'http://';
+
+        $domain = $scheme . Str::after($domain, $scheme);
+
+        $domain = parse_url($domain, PHP_URL_HOST);
+
+        static::$acceptableDomains[] = $domain;
 
         return $this;
     }
