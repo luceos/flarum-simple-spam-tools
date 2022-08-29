@@ -29,9 +29,9 @@ return [
         ->allowLinksFromDomain('http://flarum.org')
         // even a link works, only the domain will be used
         ->allowLinksFromDomain('discuss.flarum.org/d/26095')
-        // Specify the number of hours after signup a user will be tested for bad content
+        // How long after sign up all posts are scrutinized for bad content
         ->checkForUserUpToHoursSinceSignUp(5)
-        // Specify the number of posts needed to be ignored for bad content testing
+        // How many of the first posts of a user to scrutinize for bad content
         ->checkForUserUpToPostContribution(5)
         // Specify the user Id of the moderator raising flags for some actions
         ->moderateAsUser(2),
