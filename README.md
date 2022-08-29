@@ -5,14 +5,14 @@ This extension adds some advanced protection against spam runs on your community
 Install the extension:
 
 ```
-composer require luceos/flarum-simple-spam-tools
+composer require luceos/flarum-simple-spam-tools:"*"
 ```
 
 Update the extension:
 
 
 ```
-composer require luceos/flarum-simple-spam-tools
+composer require luceos/flarum-simple-spam-tools:"*"
 ```
 
 Make sure to confirm all local extenders still work afterwards.
