@@ -11,7 +11,7 @@ class ContentTest extends TestCase
     use Content;
 
     /**
-     * @covers \Luceos\Spam\Concerns\Content
+     * @covers \Luceos\Spam\Concerns\Content::containsProblematicLinks
      * @test
      */
     function allows_reasonable_content()
@@ -30,7 +30,7 @@ EOM
     }
 
     /**
-     * @covers \Luceos\Spam\Concerns\Content
+     * @covers \Luceos\Spam\Concerns\Content::containsProblematicLinks
      * @test
      */
     function fails_on_link()
@@ -59,7 +59,7 @@ EOM
     }
 
     /**
-     * @covers \Luceos\Spam\Concerns\Content
+     * @covers \Luceos\Spam\Concerns\Content::containsProblematicLinks
      * @test
      */
     function fails_on_emails()
@@ -88,7 +88,7 @@ EOM
     }
 
     /**
-     * @covers \Luceos\Spam\Concerns\Content
+     * @covers \Luceos\Spam\Concerns\Content::containsProblematicLinks
      * @test
      */
     function allows_links_with_acceptable_domain()
@@ -120,7 +120,7 @@ EOM
     }
 
     /**
-     * @covers \Luceos\Spam\Concerns\Content
+     * @covers \Luceos\Spam\Concerns\Content::containsProblematicLinks
      * @test
      */
     function fails_on_example_from_discuss_2022_08_26()
@@ -140,6 +140,69 @@ EOM
                 <<<EOM
 If you are looking for the best and most affordable car rental service, book Chandigarh to Delhi taxi at Vahan Seva. We are a renowned and reliable car rental agency in Chandigarh. We are famous for offering the best cab booking services to our clients. You can find various **[Chandigarh to Delhi Taxi Services](https://jkbrothertravels.com/oneway/taxi-service/chandigarh-to-delhi)** available from where you can book your cab from Chandigarh to Delhi. for more information visit our website.
 EOM
+            )
+        );
+    }
+
+    /**
+     * @test
+     * @covers \Luceos\Spam\Concerns\Content::containsAlternateLanguage
+     */
+    function allows_installed_languages()
+    {
+        $this->assertFalse(
+            $this->containsProblematicContent(
+                <<<EOM
+I have created my profile on August 27th 2015. You won't believe it, but it's true.
+EOM
+
+            )
+        );
+        
+        // Dutch
+        $this->assertFalse(
+            $this->containsProblematicContent(
+                <<<EOM
+Ik heb mijn gebruikersprofiel aangemaakt op 27 augustus 2015. Je zult het niet geloven, maar het is echt waar.
+EOM
+
+            )
+        );
+    }
+
+    /**
+     * @test
+     * @covers \Luceos\Spam\Concerns\Content::containsAlternateLanguage
+     */
+    function fails_for_other_languages()
+    {
+        // German
+        $this->assertFalse(
+            $this->containsProblematicContent(
+                <<<EOM
+Ich habe mein account erstellt am 27er August 2015. Du kannst es bestimmt nicht glauben, aber es ist wirklich war.
+EOM
+
+            )
+        );
+
+        // Chinese simplified
+        $this->assertFalse(
+            $this->containsProblematicContent(
+                <<<EOM
+我在 2015 年 8 月 27 日创建了我的用户资料。你不会相信，但这是真的。
+EOM
+
+            )
+        );
+
+        // Turkish
+        $this->assertFalse(
+            $this->containsProblematicContent(
+                <<<EOM
+27 Ağustos 2015'te kullanıcı profilimi oluşturdum. İnanmayacaksınız ama gerçekten doğru.
+EOM
+
             )
         );
     }

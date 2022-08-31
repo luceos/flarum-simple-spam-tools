@@ -3,6 +3,8 @@
 namespace Luceos\Spam\Tests;
 
 use Flarum\Foundation\Config;
+use Flarum\Locale\LocaleManager;
+use Flarum\Locale\Translator;
 use Illuminate\Container\Container;
 
 class TestCase extends \PHPUnit\Framework\TestCase
@@ -16,5 +18,13 @@ class TestCase extends \PHPUnit\Framework\TestCase
         $container->singleton(Config::class, fn() => new Config([
             'url' => 'http://localhost'
         ]));
+
+        $container->singleton(LocaleManager::class, function () {
+            $manager = new LocaleManager(new Translator('en'));
+
+            $manager->addLocale('nl', 'Nederlands');
+
+            return $manager;
+        });
     }
 }
