@@ -22,6 +22,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
         $container->singleton(LocaleManager::class, function () {
             $manager = new LocaleManager(new Translator('en'));
 
+            $manager->addLocale('en', 'English');
             $manager->addLocale('nl', 'Nederlands');
 
             return $manager;

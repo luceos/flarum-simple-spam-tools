@@ -31,22 +31,22 @@ trait Content
 
     public function containsAlternateLanguage(string $content): bool
     {
+        // strip links
+        $content = preg_replace('~[\S]+@[\S]+\.[\S]+~', '', $content);
+        $content = preg_replace('~https?:\/\/([-\w.]+)~', '', $content);
+        $content = preg_replace('~(\+|00)[0-9 ]{9,}~', '', $content);
+
+
+        // Let's not do language analysis on short strings.
+        if (mb_strlen($content) < 10) return false;
+
         /** @var LocaleManager $locales */
         $locales = resolve(LocaleManager::class);
 
         $locales = array_keys($locales->getLocales());
 
-        $languageDetection = (new Language)
-            ->detect($content)
-            // Remove installed locales from the resultset for identification.
-            ->blacklist($locales)
-            // Only retrieve hits that have a high match.
-            ->bestResults()
-            // Only retrieve the top 1
-            ->limit(0, 1)
-            // Close detection
-            ->close();
+        $languageDetection = (new Language)->detect($content);
 
-        return count($languageDetection) > 0;
+        return ! empty($languageDetection) && ! in_array((string) $languageDetection, $locales);
     }
 }

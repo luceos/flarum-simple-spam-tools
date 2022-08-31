@@ -153,20 +153,18 @@ EOM
         $this->assertFalse(
             $this->containsProblematicContent(
                 <<<EOM
-I have created my profile on August 27th 2015. You won't believe it, but it's true.
+I created my profile on August 27th 2015. You won't believe it, but it's true.
 EOM
-
-            )
+            ), 'Falsely marks English as invalid language'
         );
-        
+
         // Dutch
         $this->assertFalse(
             $this->containsProblematicContent(
                 <<<EOM
 Ik heb mijn gebruikersprofiel aangemaakt op 27 augustus 2015. Je zult het niet geloven, maar het is echt waar.
 EOM
-
-            )
+            ), 'Falsely marks Dutch as invalid language'
         );
     }
 
@@ -177,32 +175,29 @@ EOM
     function fails_for_other_languages()
     {
         // German
-        $this->assertFalse(
+        $this->assertTrue(
             $this->containsProblematicContent(
                 <<<EOM
 Ich habe mein account erstellt am 27er August 2015. Du kannst es bestimmt nicht glauben, aber es ist wirklich war.
 EOM
-
             )
         );
 
         // Chinese simplified
-        $this->assertFalse(
+        $this->assertTrue(
             $this->containsProblematicContent(
                 <<<EOM
 我在 2015 年 8 月 27 日创建了我的用户资料。你不会相信，但这是真的。
 EOM
-
             )
         );
 
         // Turkish
-        $this->assertFalse(
+        $this->assertTrue(
             $this->containsProblematicContent(
                 <<<EOM
 27 Ağustos 2015'te kullanıcı profilimi oluşturdum. İnanmayacaksınız ama gerçekten doğru.
 EOM
-
             )
         );
     }
