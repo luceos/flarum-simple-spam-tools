@@ -28,6 +28,15 @@ class Filter implements ExtenderInterface
         return $this;
     }
 
+    public function allowLinksFromDomains(array $domains)
+    {
+        foreach ($domains as $domain) {
+            $this->allowLinksFromDomain($domain);
+        }
+
+        return $this;
+    }
+
     public function checkForUserUpToPostContribution(int $posts = 1)
     {
         static::$userPostCount = $posts;

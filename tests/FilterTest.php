@@ -30,6 +30,24 @@ class FilterTest extends TestCase
 
     /**
      * @test
+     * @covers \Luceos\Spam\Filter::allowLinksFromDomains
+     */
+    function allows_multiple_domains()
+    {
+        (new Filter)
+            ->allowLinksFromDomains([
+                'google.com',
+                'flarum.org'
+            ]);
+
+        $this->assertEquals(
+            'flarum.org',
+            Filter::getAcceptableDomains()[1]
+        );
+    }
+
+    /**
+     * @test
      * @covers \Luceos\Spam\Filter
      */
     function allows_fqdn()
