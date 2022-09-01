@@ -29,6 +29,12 @@ return [
         ->allowLinksFromDomain('http://flarum.org')
         // even a link works, only the domain will be used
         ->allowLinksFromDomain('discuss.flarum.org/d/26095')
+        // Alternatively, use an array of domains
+        ->allowLinksFromDomains([
+            'luceos.com',
+            'flarum.org',
+            'discuss.flarum.org'
+        ])
         // How long after sign up all posts are scrutinized for bad content
         ->checkForUserUpToHoursSinceSignUp(5)
         // How many of the first posts of a user to scrutinize for bad content
